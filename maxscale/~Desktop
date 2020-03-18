@@ -1,0 +1,119 @@
+version: '2'
+services:
+    
+        #    shard-a:
+        #        image: mariadb:latest
+        #        depends_on:
+        #            - master
+        #            - slave1
+        #        environment:
+        #            MYSQL_ALL0W_EMPTY_PASSWORD: 'Y'
+        #        volumes:
+        #            - ./shard/shard-a/master:/docker-entrypoint-initdb.d
+        #        ports:
+        #            - "4000:3006"
+                
+    shard-a:
+        master:
+            image: mariadb:latest
+            environment:
+                MYSQL_ALLOW_EMPTY_PASSWORD: 'Y'
+            volumes:
+                - ./sql/shard-A/master:/docker-entrypoint-initdb.d
+            command: mysqld --log-bin=mariadb-bin --binlog-format=ROW --server-id=3000
+            ports:
+                - "4001:3306"
+    
+        slave1:
+            image: mariadb:latest
+            depends_on:
+                - master
+            environment:
+                MYSQL_ALLOW_EMPTY_PASSWORD: 'Y'
+            volumes:
+                - ./sql/shard-A/slave:/docker-entrypoint-initdb.d
+            command: mysqld --log-bin=mariadb-bin --binlog-format=ROW --server-id=3001 --log-slave-updates
+            ports:
+                - "4002:3306"
+    
+                  #    shard-b:
+                  #        image: mariadb:latest
+                  #        depends_on:
+                  #            - master2
+                  #            - slave2 
+                  #        environment:
+                  #            MYSQL_ALL0W_EMPTY_PASSWORD: 'Y'
+                  #        volumes:
+                  #            - ./shard/shard-b/master:/docker-entrypoint-initdb.d
+                  #        ports:
+                  #            - "4009:3306"    
+    shard-b: 
+        master2:
+            image: mariadb:latest
+            environment:
+                MYSQL_ALLOW_EMPTY_PASSWORD: 'Y'
+            volumes:
+                - ./sql/shard-B/master:/docker-entrypoint-initdb.d
+            command: mysqld --log-bin=mariadb-bin --binlog-format=ROW --server-id=3002
+            ports:
+                - "4003:3306"
+    
+        slave2:
+            image: mariadb:latest
+            depends_on:
+                - master2
+            environment:
+                MYSQL_ALLOW_EMPTY_PASSWORD: 'Y'
+            volumes:
+                - ./sql/shard-B/slave:/docker-entrypoint-initdb.d
+            command: mysqld --log-bin=mariadb-bin --binlog-format=ROW --server-id=3003 --log-slave-updates
+            ports:
+                - "4004:3306"
+
+    maxscale:
+        image: mariadb/maxscale:latest
+        depends_on:
+                #- master
+              #- master2  
+              #- slave1
+              #- slave2
+            - shard-a
+            - shard-b
+        volumes:
+            - ./maxscale.cnf.d:/etc/maxscale.cnf.d 
+        ports:
+            - "4006:4006"  # shard-A              
+            - "4007:4007"  # shard-B  
+              # - "4008:4008"  # readonly port
+              #- "4009:4009"  # readwrite port
+            - "8989:8989"  # REST API port
+            - "3306:3306"  
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        links:
+            - maxscale
+            - master
+            - master2
+            - slave1
+            - slave2  
+        depends_on:
+            - maxscale
+            - master
+            - master2
+            - slave1
+            - slave2  
+        environment:
+            - PMA_ARBITRARY=0   
+            - PMA_HOST=maxscale
+              #- PMA_PORT=3306
+            - PMA_PORTS= 3306,4007,4006,4001,4002,4003.4004  
+        restart: always
+        ports:
+            - 8080:80  
+        volumes:
+            - /sessions        
+              #networks:
+              #default:
+              # ipv4_address: 10.0.0.3              
