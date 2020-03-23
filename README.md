@@ -9,6 +9,10 @@ This Docker image runs the latest 2.4 version of MariaDB MaxScale.
 - [Docker-Compose](https://docs.docker.com/compose/install/)
 - [MariaDB-server](https://linuxize.com/post/how-to-install-mariadb-on-ubuntu-18-04/)
 
+## GitHub Repo
+
+- [Gustanik](https://github.com/gustanik/CNA350)
+
 ## Building
 
 Run the following command in `~/CNA350` directory to build the image.
