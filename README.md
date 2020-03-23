@@ -18,7 +18,6 @@ Run the following commands below in the `~/CNA350/maxscale` directory to run the
 ```
 docker-compose up -d
 docker-compose exec maxscale maxctrl list servers
-```
 
 │ Server  │ Address   │ Port │ Connections │ State           │ GTID      │
 ├─────────┼───────────┼──────┼─────────────┼─────────────────┼───────────┤
@@ -34,13 +33,15 @@ docker-compose exec maxscale maxctrl list servers
 ├─────────┼───────────┼──────┼─────────────┼─────────────────┼───────────┤
 │ Shard-B │ 127.0.0.1 │ 4007 │ 0           │ Running         │           │
 └─────────┴───────────┴──────┴─────────────┴─────────────────┴───────────┘
+```
+
+
 
 ## MySQL Query
 Go into the `~/CNA350/maxscale/sql` directory to execute the following SQL query commands. This will return the zipcodes from each shard.
 
 ```
 mysql -u maxuser -pmaxpwd -h 127.0.0.1 -P 3306 -e "SELECT *  FROM zipcodes_two.zipcodes_two LIMIT 50;"
-```
 +---------+-------------+---------------+-------+--------------+-----------+------------+------------------------+---------------+-----------------+---------------------+------------+
 | Zipcode | ZipCodeType | City          | State | LocationType | Coord_Lat | Coord_Long | Location               | Decommisioned | TaxReturnsFiled | EstimatedPopulation | TotalWages |
 +---------+-------------+---------------+-------+--------------+-----------+------------+------------------------+---------------+-----------------+---------------------+------------+
@@ -95,11 +96,12 @@ mysql -u maxuser -pmaxpwd -h 127.0.0.1 -P 3306 -e "SELECT *  FROM zipcodes_two.z
 |   42142 | PO BOX      | GLASGOW       | KY    | PRIMARY      | 36.99     | -85.92     | NA-US-KY-GLASGOW       | FALSE         | 493             | 812                 | 12735248   |
 |   42156 | STANDARD    | LUCAS         | KY    | PRIMARY      | 36.88     | -86.03     | NA-US-KY-LUCAS         | FALSE         |                 |                     |            |
 +---------+-------------+---------------+-------+--------------+-----------+------------+------------------------+---------------+-----------------+---------------------+------------+
+```
+
 
 
 ```
 mysql -u maxuser -pmaxpwd -h 127.0.0.1 -P 3306 -e "SELECT *  FROM zipcodes_one.zipcodes_one LIMIT 50;"
-```
 +---------+-------------+--------------------+-------+--------------+-----------+------------+-----------------------------+---------------+-----------------+---------------------+------------+
 | Zipcode | ZipCodeType | City               | State | LocationType | Coord_Lat | Coord_Long | Location                    | Decommisioned | TaxReturnsFiled | EstimatedPopulation | TotalWages |
 +---------+-------------+--------------------+-------+--------------+-----------+------------+-----------------------------+---------------+-----------------+---------------------+------------+
@@ -154,5 +156,4 @@ mysql -u maxuser -pmaxpwd -h 127.0.0.1 -P 3306 -e "SELECT *  FROM zipcodes_one.z
 |   10002 | STANDARD    | NEW YORK           | NY    | PRIMARY      | 40.71     | -73.99     | NA-US-NY-NEW YORK           | FALSE         | 45236           | 70604               | 1394042364 |
 |   10003 | STANDARD    | NEW YORK           | NY    | PRIMARY      | 40.71     | -73.99     | NA-US-NY-NEW YORK           | FALSE         | 28817           | 36569               |            |
 +---------+-------------+--------------------+-------+--------------+-----------+------------+-----------------------------+---------------+-----------------+---------------------+------------+
-
-
+```
