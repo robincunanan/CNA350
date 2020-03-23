@@ -2,11 +2,12 @@
 
 This Docker image runs the latest 2.4 version of MariaDB MaxScale.
 
--	[Travis CI:  
-	![build status badge](https://img.shields.io/travis/mariadb-corporation/maxscale-docker/master.svg)](https://travis-ci.org/mariadb-corporation/maxscale-docker/branches)
-
 ## Prerequisites
 - [How to Build an E-commerce Website with Django and Python](https://www.youtube.com/watch?v=YZvRrldjf1Y&feature=youtu.be)
+- Ubuntu
+- [Docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
+- [Docker-Compose](https://docs.docker.com/compose/install/)
+- [MariaDB-server](https://linuxize.com/post/how-to-install-mariadb-on-ubuntu-18-04/)
 
 ## Building
 
