@@ -11,14 +11,14 @@ This Docker image runs the latest 2.4 version of MariaDB MaxScale.
 
 ## Building
 
-Run the following command in ~/CNA350 directory to build the image.
+Run the following command in '~/CNA350' directory to build the image.
 
 ```
 make build-image
 ```
 
 ## Running
-Run the following commands below in the ~/CNA350/maxscale directory to run the docker compose yml file
+Run the following commands below in the '~/CNA350/maxscale' directory to run the docker compose yml file
 
 ```
 docker-compose build
